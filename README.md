@@ -55,6 +55,8 @@ InvoiceApi/
 
 - .NET 8.0 SDK
 - Fixer API key (for exchange rate data)
+  - Sign up at [Fixer.io](https://fixer.io/) to get a free API key
+  - Free tier includes latest rates but historical rates require paid plan
 
 ### Installation
 
@@ -71,6 +73,8 @@ InvoiceApi/
      "FixerApiKey": "your-api-key-here"
    }
    ```
+   
+   **Note**: The API will first try to fetch historical rates. If your API key doesn't have access to historical data (free tier limitation), it will automatically fall back to using the latest available rates.
 
 3. **Restore dependencies**
    ```bash
@@ -213,6 +217,7 @@ The API provides comprehensive error handling:
 - **400 Bad Request**: Invalid input (negative amounts, unsupported currencies)
 - **500 Internal Server Error**: External API failures or unexpected errors
 - **Input Validation**: Request body validation and business rule enforcement
+- **API Fallback**: If historical rates are unavailable (free tier limitation), automatically falls back to latest rates
 
 ## 📊 Business Logic
 
@@ -253,28 +258,67 @@ dotnet run --project InvoiceApi
 dotnet publish -c Release
 ```
 
-### Docker (if needed)
-```dockerfile
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-WORKDIR /app
-EXPOSE 80
-EXPOSE 443
+### Docker Deployment
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-WORKDIR /src
-COPY ["InvoiceApi/InvoiceApi.csproj", "InvoiceApi/"]
-RUN dotnet restore "InvoiceApi/InvoiceApi.csproj"
-COPY . .
-WORKDIR "/src/InvoiceApi"
-RUN dotnet build "InvoiceApi.csproj" -c Release -o /app/build
+#### Option 1: Using Docker Compose (Recommended)
 
-FROM build AS publish
-RUN dotnet publish "InvoiceApi.csproj" -c Release -o /app/publish
+1. **Create environment file:**
+   ```bash
+   cp env.example .env
+   # Edit .env and add your Fixer API key
+   ```
 
-FROM base AS final
-WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "InvoiceApi.dll"]
+2. **Build and run:**
+   ```bash
+   docker-compose up -d
+   ```
+
+3. **Access the API:**
+   - API: `http://localhost:8080`
+   - Swagger UI: `http://localhost:8080/swagger`
+
+#### Option 2: Using Docker directly
+
+1. **Build the image:**
+   ```bash
+   docker build -t invoice-api .
+   ```
+
+2. **Run the container:**
+   ```bash
+   docker run -d \
+     --name invoice-api \
+     -p 8080:8080 \
+     -e FixerApiKey=your-api-key-here \
+     invoice-api
+   ```
+
+3. **Access the API:**
+   - API: `http://localhost:8080`
+   - Swagger UI: `http://localhost:8080/swagger`
+
+#### Docker Commands
+
+```bash
+# Build image
+docker build -t invoice-api .
+
+# Run container
+docker run -d --name invoice-api -p 8080:8080 -e FixerApiKey=your-key invoice-api
+
+# View logs
+docker logs invoice-api
+
+# Stop container
+docker stop invoice-api
+
+# Remove container
+docker rm invoice-api
+
+# Using docker-compose
+docker-compose up -d
+docker-compose down
+docker-compose logs -f
 ```
 
 ## 🤝 Contributing
@@ -296,6 +340,43 @@ For issues and questions:
 1. Check the existing issues
 2. Create a new issue with detailed information
 3. Include error messages and reproduction steps
+
+---
+
+## 🔧 Troubleshooting
+
+### Common API Issues
+
+1. **Unauthorized Error (401/403)**
+   - Ensure your Fixer API key is valid and active
+   - Check if you're using the correct API key in `appsettings.json`
+   - Free tier API keys may not have access to historical data
+
+2. **Historical Rates Not Available**
+   - The API automatically falls back to latest rates if historical data is unavailable
+   - This is normal behavior for free tier API keys
+
+3. **Rate Limiting**
+   - Free tier has rate limits (typically 100 requests/month)
+   - Consider upgrading to a paid plan for higher limits
+
+4. **Invalid Currency Codes**
+   - Ensure you're using valid 3-letter currency codes (EUR, USD, CAD)
+   - The API only supports EUR, USD, and CAD currencies
+
+### Testing the API
+
+You can test the API using the Swagger UI at `https://localhost:7001/swagger` or using curl:
+
+```bash
+curl -X POST "https://localhost:7001/api/invoice/calculate" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "invoiceDate": "2020-08-05",
+    "preTaxAmount": 123.45,
+    "paymentCurrency": "USD"
+  }'
+```
 
 ---
 
