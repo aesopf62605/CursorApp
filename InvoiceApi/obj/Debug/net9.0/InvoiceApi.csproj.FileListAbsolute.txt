@@ -1,8 +1,0 @@
-C:\Project\Github\CursorApp\InvoiceApi\obj\Debug\net9.0\InvoiceApi.csproj.AssemblyReference.cache
-C:\Project\Github\CursorApp\InvoiceApi\obj\Debug\net9.0\rpswa.dswa.cache.json
-C:\Project\Github\CursorApp\InvoiceApi\obj\Debug\net9.0\InvoiceApi.GeneratedMSBuildEditorConfig.editorconfig
-C:\Project\Github\CursorApp\InvoiceApi\obj\Debug\net9.0\InvoiceApi.AssemblyInfoInputs.cache
-C:\Project\Github\CursorApp\InvoiceApi\obj\Debug\net9.0\InvoiceApi.AssemblyInfo.cs
-C:\Project\Github\CursorApp\InvoiceApi\obj\Debug\net9.0\InvoiceApi.csproj.CoreCompileInputs.cache
-C:\Project\Github\CursorApp\InvoiceApi\obj\Debug\net9.0\InvoiceApi.MvcApplicationPartsAssemblyInfo.cs
-C:\Project\Github\CursorApp\InvoiceApi\obj\Debug\net9.0\InvoiceApi.MvcApplicationPartsAssemblyInfo.cache

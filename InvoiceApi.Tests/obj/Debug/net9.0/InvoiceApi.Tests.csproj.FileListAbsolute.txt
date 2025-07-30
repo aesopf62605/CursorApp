@@ -1,5 +1,0 @@
-C:\Project\Github\CursorApp\InvoiceApi.Tests\obj\Debug\net9.0\InvoiceApi.Tests.csproj.AssemblyReference.cache
-C:\Project\Github\CursorApp\InvoiceApi.Tests\obj\Debug\net9.0\InvoiceApi.Tests.GeneratedMSBuildEditorConfig.editorconfig
-C:\Project\Github\CursorApp\InvoiceApi.Tests\obj\Debug\net9.0\InvoiceApi.Tests.AssemblyInfoInputs.cache
-C:\Project\Github\CursorApp\InvoiceApi.Tests\obj\Debug\net9.0\InvoiceApi.Tests.AssemblyInfo.cs
-C:\Project\Github\CursorApp\InvoiceApi.Tests\obj\Debug\net9.0\InvoiceApi.Tests.csproj.CoreCompileInputs.cache
