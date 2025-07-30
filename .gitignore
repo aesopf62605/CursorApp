@@ -1,0 +1,45 @@
+# VS Code settings
+.vscode/
+
+# Node.js dependencies (if applicable)
+node_modules/
+
+# C# / .NET build artifacts
+bin/
+obj/
+*.user
+*.suo
+*.csproj.user
+*.cache
+*.pdb
+*.dbmdl
+*.log
+
+# ASP.NET Core specific
+*.db
+*.sqlite
+
+# Build directories
+dist/
+build/
+out/
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak
+*.swp
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Package managers
+npm-debug.log
+yarn-error.log
+pnpm-debug.log
+
+# OS-specific
+.DS_Store      # macOS
+Thumbs.db      # Windows
