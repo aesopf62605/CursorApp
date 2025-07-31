@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: invoiceapi
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: invoiceapi
+  template:
+    metadata:
+      labels:
+        app: invoiceapi
+    spec:
+      containers:
+      - name: invoiceapi
+        image: cursorappdev.azurecr.io/invoice-api:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Production"
+        # Add more env variables as needed
