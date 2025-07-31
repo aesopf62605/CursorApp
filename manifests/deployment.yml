@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: cursorapp 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cursorapp
+  template:
+    metadata:
+      labels:
+        app: cursorapp 
+    spec:
+      containers:
+        - name: cursorapp 
+          image: cursorappdev.azurecr.io/cursorapp
+          ports:
+          - containerPort: 8080
