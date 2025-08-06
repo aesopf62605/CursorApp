@@ -79,9 +79,12 @@ stages:
               containers: |
                 $(containerRegistry)/$(imageRepository):$(tag)
 
-          - script: |
-              kubectl create namespace monitoring || echo "Namespace already exists"
-              displayName: 'Create Namespace'
+          - task: KubernetesManifest@0
+            displayName: Ensure monitoring namespace exists
+            inputs:
+              action: deploy
+              manifests: |
+                $(Pipeline.Workspace)/k8s-dev/monitoring-namespace.yaml
 
           - task: KubernetesManifest@0
             displayName: Deploy monitoring stack
