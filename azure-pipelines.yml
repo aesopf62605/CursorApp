@@ -84,7 +84,7 @@ stages:
             inputs:
               action: deploy
               manifests: |
-                
+                $(Pipeline.Workspace)/k8s-dev/monitoring-namespace.yaml
                 $(Pipeline.Workspace)/k8s-dev/azure-devops-rbac.yaml
 
           - task: KubernetesManifest@0
