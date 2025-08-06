@@ -79,18 +79,9 @@ stages:
               containers: |
                 $(containerRegistry)/$(imageRepository):$(tag)
 
-          - task: Kubernetes@1
+          - script: |
+              kubectl create namespace monitoring || echo "Namespace already exists"
               displayName: 'Create Namespace'
-              inputs:
-                connectionType: 'Kubernetes Service Connection'
-                kubernetesServiceEndpoint: 'cursorappdev92439077-auth'
-                command: apply
-                useConfigurationFile: true
-                configuration: |
-                  apiVersion: v1
-                  kind: Namespace
-                  metadata:
-                    name: monitoring
 
           - task: KubernetesManifest@0
             displayName: Deploy monitoring stack
