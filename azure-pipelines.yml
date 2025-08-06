@@ -80,15 +80,22 @@ stages:
                 $(containerRegistry)/$(imageRepository):$(tag)
 
           - task: KubernetesManifest@0
-            displayName: Deploy monitoring namespace and RBAC
+            displayName: Deploy monitoring namespace
             inputs:
               action: deploy
               manifests: |
                 $(Pipeline.Workspace)/k8s-dev/monitoring-namespace.yaml
+
+          - task: KubernetesManifest@0
+            displayName: Deploy RBAC for monitoring
+            inputs:
+              action: deploy
+              namespace: monitoring
+              manifests: |
                 $(Pipeline.Workspace)/k8s-dev/azure-devops-rbac.yaml
 
           - task: KubernetesManifest@0
-            displayName: Deploy monitoring stack
+            displayName: Deploy Prometheus
             inputs:
               action: deploy
               namespace: monitoring
@@ -96,9 +103,49 @@ stages:
               manifests: |
                 $(Pipeline.Workspace)/k8s-dev/prometheus-configmap.yaml
                 $(Pipeline.Workspace)/k8s-dev/prometheus-deployment.yaml
+
+          - task: KubernetesManifest@0
+            displayName: Deploy Grafana
+            inputs:
+              action: deploy
+              namespace: monitoring
+              serviceAccount: azure-devops-sa
+              manifests: |
                 $(Pipeline.Workspace)/k8s-dev/grafana-deployment.yaml
+
+          - task: KubernetesManifest@0
+            displayName: Deploy Loki
+            inputs:
+              action: deploy
+              namespace: monitoring
+              serviceAccount: azure-devops-sa
+              manifests: |
                 $(Pipeline.Workspace)/k8s-dev/loki-deployment.yaml
+
+          - task: KubernetesManifest@0
+            displayName: Deploy Promtail
+            inputs:
+              action: deploy
+              namespace: monitoring
+              serviceAccount: azure-devops-sa
+              manifests: |
                 $(Pipeline.Workspace)/k8s-dev/promtail-deployment.yaml
+
+          - task: KubernetesManifest@0
+            displayName: Deploy Node Exporter
+            inputs:
+              action: deploy
+              namespace: monitoring
+              serviceAccount: azure-devops-sa
+              manifests: |
                 $(Pipeline.Workspace)/k8s-dev/node-exporter-deployment.yaml
+
+          - task: KubernetesManifest@0
+            displayName: Deploy monitoring ingress
+            inputs:
+              action: deploy
+              namespace: monitoring
+              serviceAccount: azure-devops-sa
+              manifests: |
                 $(Pipeline.Workspace)/k8s-dev/monitoring-ingress.yaml
 

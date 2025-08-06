@@ -1,9 +1,12 @@
+---
+# Service Account for Azure DevOps monitoring deployment
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: azure-devops-sa
   namespace: monitoring
 ---
+# Cluster Role for Azure DevOps monitoring permissions
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -36,6 +39,7 @@ rules:
   - rolebindings
   verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
 ---
+# Cluster Role Binding for Azure DevOps monitoring
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -49,6 +53,7 @@ subjects:
   name: azure-devops-sa
   namespace: monitoring
 ---
+# Namespace Role for Azure DevOps monitoring
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
@@ -74,6 +79,7 @@ rules:
   - ingresses
   verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
 ---
+# Role Binding for Azure DevOps monitoring
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
