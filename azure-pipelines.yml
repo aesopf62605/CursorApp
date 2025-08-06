@@ -43,6 +43,8 @@ stages:
 
     - upload: manifests
       artifact: manifests
+    - upload: k8s/dev
+      artifact: k8s-dev
 
 - stage: Deploy
   displayName: Deploy stage
@@ -76,4 +78,18 @@ stages:
                 $(imagePullSecret)
               containers: |
                 $(containerRegistry)/$(imageRepository):$(tag)
+
+          - task: KubernetesManifest@0
+            displayName: Deploy monitoring stack
+            inputs:
+              action: deploy
+              manifests: |
+                $(Pipeline.Workspace)/k8s-dev/monitoring-namespace.yaml
+                $(Pipeline.Workspace)/k8s-dev/prometheus-configmap.yaml
+                $(Pipeline.Workspace)/k8s-dev/prometheus-deployment.yaml
+                $(Pipeline.Workspace)/k8s-dev/grafana-deployment.yaml
+                $(Pipeline.Workspace)/k8s-dev/loki-deployment.yaml
+                $(Pipeline.Workspace)/k8s-dev/promtail-deployment.yaml
+                $(Pipeline.Workspace)/k8s-dev/node-exporter-deployment.yaml
+                $(Pipeline.Workspace)/k8s-dev/monitoring-ingress.yaml
 

@@ -1,8 +1,10 @@
 using System;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using InvoiceApi.Services;
 
 namespace InvoiceApi.Clients
 {
@@ -11,25 +13,44 @@ namespace InvoiceApi.Clients
         private readonly HttpClient _httpClient;
         private readonly string _apiKey;
         private readonly string _baseUrl = "http://data.fixer.io/api";
+        private readonly IMetricsService _metricsService;
 
-        public FixerExchangeRateClient(HttpClient httpClient, IConfiguration configuration)
+        public FixerExchangeRateClient(HttpClient httpClient, IConfiguration configuration, IMetricsService metricsService)
         {
             _httpClient = httpClient;
             _apiKey = configuration["FixerApiKey"] ?? throw new ArgumentNullException("FixerApiKey");
+            _metricsService = metricsService;
         }
 
         public async Task<decimal> GetHistoricalRateAsync(DateTime date, string baseCurrency, string targetCurrency)
         {
+            var stopwatch = Stopwatch.StartNew();
+            var success = false;
+            
             try
             {
                 // First try historical rates endpoint
-                return await GetHistoricalRateFromEndpoint(date, baseCurrency, targetCurrency);
+                var result = await GetHistoricalRateFromEndpoint(date, baseCurrency, targetCurrency);
+                success = true;
+                return result;
             }
             catch (Exception ex) when (ex.Message.Contains("401") || ex.Message.Contains("403") || ex.Message.Contains("Unauthorized"))
             {
                 // If historical rates fail due to authorization, fall back to latest rates
                 // This is common with free tier API keys
-                return await GetLatestRateFromEndpoint(baseCurrency, targetCurrency);
+                var result = await GetLatestRateFromEndpoint(baseCurrency, targetCurrency);
+                success = true;
+                return result;
+            }
+            catch (Exception)
+            {
+                success = false;
+                throw;
+            }
+            finally
+            {
+                stopwatch.Stop();
+                _metricsService.RecordExchangeRateRequest(baseCurrency, targetCurrency, success, stopwatch.Elapsed);
             }
         }
 

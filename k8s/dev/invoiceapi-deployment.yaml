@@ -11,6 +11,10 @@ spec:
     metadata:
       labels:
         app: invoiceapi
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+        prometheus.io/path: "/metrics"
     spec:
       containers:
       - name: invoiceapi
@@ -20,4 +24,8 @@ spec:
         env:
         - name: ASPNETCORE_ENVIRONMENT
           value: "Production"
+        - name: ASPNETCORE_URLS
+          value: "http://+:8080"
+        - name: METRICS_ENABLED
+          value: "true"
         # Add more env variables as needed
