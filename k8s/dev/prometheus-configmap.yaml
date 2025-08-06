@@ -69,7 +69,7 @@ data:
 
       - job_name: 'invoiceapi'
         static_configs:
-        - targets: ['invoiceapi-service:8080']
+        - targets: ['invoiceapi-service.cursorapp-ns-dev.svc.cluster.local:8080']
         metrics_path: /metrics
         scrape_interval: 10s
 
