@@ -79,13 +79,25 @@ stages:
               containers: |
                 $(containerRegistry)/$(imageRepository):$(tag)
 
+          - task: Kubernetes@1
+              displayName: 'Create Namespace'
+              inputs:
+                connectionType: 'Kubernetes Service Connection'
+                kubernetesServiceEndpoint: 'cursorappdev92439077-auth'
+                command: apply
+                useConfigurationFile: true
+                configuration: |
+                  apiVersion: v1
+                  kind: Namespace
+                  metadata:
+                    name: monitoring
+
           - task: KubernetesManifest@0
             displayName: Deploy monitoring stack
             inputs:
               action: deploy
               namespace: monitoring
               manifests: |
-                $(Pipeline.Workspace)/k8s-dev/monitoring-namespace.yaml
                 $(Pipeline.Workspace)/k8s-dev/prometheus-configmap.yaml
                 $(Pipeline.Workspace)/k8s-dev/prometheus-deployment.yaml
                 $(Pipeline.Workspace)/k8s-dev/grafana-deployment.yaml
