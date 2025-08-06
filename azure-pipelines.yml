@@ -72,8 +72,8 @@ stages:
             inputs:
               action: deploy
               manifests: |
-                $(Pipeline.Workspace)/manifests/deployment.yml
-                $(Pipeline.Workspace)/manifests/service.yml
+                $(Pipeline.Workspace)/k8s-dev/invoiceapi-deployment.yaml
+                $(Pipeline.Workspace)/k8s-dev/invoiceapi-service.yaml
               imagePullSecrets: |
                 $(imagePullSecret)
               containers: |
