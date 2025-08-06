@@ -83,6 +83,7 @@ stages:
             displayName: Deploy monitoring stack
             inputs:
               action: deploy
+              namespace: monitoring
               manifests: |
                 $(Pipeline.Workspace)/k8s-dev/monitoring-namespace.yaml
                 $(Pipeline.Workspace)/k8s-dev/prometheus-configmap.yaml
