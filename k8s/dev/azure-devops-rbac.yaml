@@ -23,6 +23,9 @@ rules:
   - serviceaccounts
   - clusterroles
   - clusterrolebindings
+  - nodes
+  - nodes/proxy
+  - endpoints
   verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
 - apiGroups: ["apps"]
   resources:
