@@ -21,6 +21,8 @@ rules:
   - persistentvolumeclaims
   - secrets
   - serviceaccounts
+  - clusterroles
+  - clusterrolebindings
   verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
 - apiGroups: ["apps"]
   resources:
