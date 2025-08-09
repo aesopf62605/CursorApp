@@ -48,6 +48,8 @@ rules:
   resources:
   - ingresses
   verbs: ["get", "list",  "watch"]
+- nonResourceURLs: ["/metrics"]
+  verbs: ["get"]
 ---
 # Cluster Role Binding for Azure DevOps monitoring
 apiVersion: rbac.authorization.k8s.io/v1
