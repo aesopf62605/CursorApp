@@ -80,21 +80,6 @@ stages:
                 $(containerRegistry)/$(imageRepository):$(tag)
 
           - task: KubernetesManifest@0
-            displayName: Deploy monitoring namespace
-            inputs:
-              action: deploy
-              manifests: |
-                $(Pipeline.Workspace)/k8s-dev/monitoring-namespace.yaml
-
-          - task: KubernetesManifest@0
-            displayName: Deploy RBAC for monitoring
-            inputs:
-              action: deploy
-              namespace: monitoring
-              manifests: |
-                $(Pipeline.Workspace)/k8s-dev/azure-devops-rbac.yaml
-
-          - task: KubernetesManifest@0
             displayName: Deploy Prometheus
             inputs:
               action: deploy
