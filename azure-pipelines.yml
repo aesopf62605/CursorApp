@@ -80,11 +80,17 @@ stages:
                 $(containerRegistry)/$(imageRepository):$(tag)
 
           - task: KubernetesManifest@0
+            displayName: Create monitoring namespace
+            inputs:
+              action: deploy
+              manifests: |
+                $(Pipeline.Workspace)/k8s-dev/monitoring-namespace.yaml
+
+          - task: KubernetesManifest@0
             displayName: Deploy Prometheus
             inputs:
               action: deploy
               namespace: monitoring
-              serviceAccount: azure-devops-sa
               manifests: |
                 $(Pipeline.Workspace)/k8s-dev/prometheus-configmap.yaml
                 $(Pipeline.Workspace)/k8s-dev/prometheus-deployment.yaml
@@ -94,7 +100,6 @@ stages:
             inputs:
               action: deploy
               namespace: monitoring
-              serviceAccount: azure-devops-sa
               manifests: |
                 $(Pipeline.Workspace)/k8s-dev/grafana-deployment.yaml
 
@@ -103,7 +108,6 @@ stages:
             inputs:
               action: deploy
               namespace: monitoring
-              serviceAccount: azure-devops-sa
               manifests: |
                 $(Pipeline.Workspace)/k8s-dev/loki-deployment.yaml
 
@@ -112,7 +116,6 @@ stages:
             inputs:
               action: deploy
               namespace: monitoring
-              serviceAccount: azure-devops-sa
               manifests: |
                 $(Pipeline.Workspace)/k8s-dev/promtail-deployment.yaml
 
@@ -121,7 +124,6 @@ stages:
             inputs:
               action: deploy
               namespace: monitoring
-              serviceAccount: azure-devops-sa
               manifests: |
                 $(Pipeline.Workspace)/k8s-dev/node-exporter-deployment.yaml
 
@@ -130,7 +132,6 @@ stages:
             inputs:
               action: deploy
               namespace: monitoring
-              serviceAccount: azure-devops-sa
               manifests: |
                 $(Pipeline.Workspace)/k8s-dev/monitoring-ingress.yaml
 

@@ -13,6 +13,9 @@ subjects:
 - kind: ServiceAccount
   name: default
   namespace: cursorapp-ns-dev
+- kind: ServiceAccount
+  name: azdev-sa-e3c216
+  namespace: cursorapp-ns-dev
 ---
 # Cluster Role Binding for Azure DevOps monitoring
 apiVersion: rbac.authorization.k8s.io/v1
@@ -26,4 +29,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: default
+  namespace: cursorapp-ns-dev
+- kind: ServiceAccount
+  name: azdev-sa-e3c216
   namespace: cursorapp-ns-dev
