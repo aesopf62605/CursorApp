@@ -44,6 +44,10 @@ rules:
   - roles
   - rolebindings
   verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: ["extensions"]
+  resources:
+  - ingresses
+  verbs: ["get", "list",  "watch"]
 ---
 # Cluster Role Binding for Azure DevOps monitoring
 apiVersion: rbac.authorization.k8s.io/v1
