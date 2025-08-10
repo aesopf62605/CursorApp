@@ -98,6 +98,8 @@ spec:
       labels:
         app: grafana
     spec:
+      securityContext:
+        fsGroup: 65534
       containers:
       - name: grafana
         image: grafana/grafana:10.0.0
