@@ -103,6 +103,20 @@ spec:
     protocol: TCP
 ---
 apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus-lb
+  namespace: monitoring
+spec:
+  type: LoadBalancer
+  selector:
+    app: prometheus
+  ports:
+  - port: 80
+    targetPort: 9090
+    protocol: TCP
+---
+apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: prometheus-pvc

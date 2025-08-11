@@ -140,7 +140,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: grafana
+  name: grafana-lb
   namespace: monitoring
 spec:
   type: LoadBalancer
@@ -148,6 +148,19 @@ spec:
     app: grafana
   ports:
   - port: 80
+    targetPort: 3000
+    protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana
+  namespace: monitoring
+spec:
+  selector:
+    app: grafana
+  ports:
+  - port: 3000
     targetPort: 3000
     protocol: TCP
 ---
